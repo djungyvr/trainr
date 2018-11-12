@@ -47,7 +47,18 @@ secrets.json
 ```
 
 ### Building the AMI
+To build the ami, run `packer build -var-file=secrets.json -var-file=vars_trainr.json packer/trainr.json`
 
-### Creating the EBS Snapshot
+What this will do is create an AMI that has everything needed to run Keras with a Tensorflow-GPU backend
 
-### Provisioning with Terraform
+### Collecting the Training Data
+To create the EBS containing the training data run ...
+
+It will ask for a script that it can run to collect the training data
+
+This will create an EBS with the training data that will be mounted in the next step
+
+### Training the Model
+To create the EC2 instance that will train the model run ...
+
+It will ask for the AMI to use, the EBS snapshot, and the python script that you wish to run

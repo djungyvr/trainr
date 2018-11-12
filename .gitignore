@@ -10,3 +10,6 @@
 !trainr/trainr.auto.tfvars
 !trainr/trainr.tf
 !trainr/variables.tf
+
+!tutorial/cifar.py
+!tutorial/collect.sh
