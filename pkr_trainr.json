@@ -1,0 +1,41 @@
+{
+	"variables": {
+		"access_key": "",
+		"secret_key": ""
+	},
+	"sensitive-variables": ["access_key", "secret_key"],
+	"builders": [
+		{
+			"access_key": "{{user `access_key`}}",
+			"secret_key": "{{user `secret_key`}}",
+			"ami_name": "packer-linux-aws-trainr-{{timestamp}}",
+			"instance_type": "t2.medium",
+			"region": "us-west-2",
+			"source_ami_filter": {
+			  "filters": {
+			  "virtualization-type": "hvm",
+			  "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+			  "root-device-type": "ebs"
+			  },
+			  "owners": ["099720109477"],
+			  "most_recent": true
+			},
+			"ssh_username": "ubuntu",
+			"type": "amazon-ebs"
+		}
+	],
+	"provisioners": [
+		{
+			"type": "shell",
+			"inline": [
+				"sleep 30",
+				"sudo apt-get update",
+				"sudo apt-get -y upgrade",
+				"python3 -V",
+				"sudo apt install -y python3-pip",
+				"pip3 install tensorflow-gpu",
+				"pip3 install keras"
+			]
+		}
+	]
+}
