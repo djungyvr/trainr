@@ -1,16 +1,5 @@
 # Trainr
-A way to create and then destroy infra to train ML models
-
-Uses Packer and Terraform
-
-Steps:
-1. Copy the training data into a directory, this data will be used to create an EBS snapshot that will be mounted later
-2. Builds an AMI with Packer that has Keras with a Tensorflow GPU backend
-3. Creates the desired EC2 instance
-4. Attaches an EBS containing the training data
-5. Copies over ML script to run
-6. Save the model and any logs to an S3 bucket
-7. Terminates the EC2 instance
+A way to create and then destroy AWS resources to train ML models
 
 ## Directories
 - The data directory is used to create an EBS snapshot containing the training data
@@ -19,18 +8,46 @@ Steps:
 ```
 .
 ├── README.md
+├─  secrets.json   <-- Create this
+├─  secrets.tfvars <-- Create this
 ├── data
 │   ├── data.tf
-│   ├── secrets.auto.tfvars <-- Create this
 │   ├── trainr.auto.tfvars
 │   └── variables.tf
 ├── packer
 │   ├── trainr.json
 │   ├── vars_trainr.json
-│   └── secrets.json <-- Create this
 └── trainr
-    ├── secrets.auto.tfvars <-- Create this
     ├── trainr.auto.tfvars
     ├── trainr.tf
     └── variables.tf
 ```
+
+## Tutorial (OSX)
+This tutorial goes through how I use this project to train my models. In this case we are training a CNN on the CIFAR-10 dataset.
+
+### Prerequisites: Terraform and Packer Credentials
+1. Install Packer and Terraform with `brew install packer` and `brew install terraform`
+2. Create an IAM group with the following permissions: [AmazonEC2FullAccess, AmazonS3FullAccess]
+3. Create an IAM user and add it to the group. Note the access key and secret key. We will need this to provision AWS resources.
+4. Use the keys to create a secrets.tfvars and a secrets.json file they are used for Terraform and Packer respectively.
+
+secrets.tfvars
+```
+access_key="YOUR_ACCESS_KEY"
+secret_key="YOUR_SECRET_KEY"
+```
+
+secrets.json
+```
+{
+  "access_key": "YOUR_ACCESS_KEY",
+  "secret_key": "YOUR_SECRET_KEY"
+}
+```
+
+### Building the AMI
+
+### Creating the EBS Snapshot
+
+### Provisioning with Terraform
