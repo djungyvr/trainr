@@ -13,9 +13,9 @@ Steps:
 7. Terminates the EC2 instance
 
 ## Directories
-The data directory is used to create an EBS snapshot containing the training data
-The packer dierctory is used to create the ami that will be used for training
-The trainr directory is used to create an EC2 instance that will train the model and push it to S3
+- The data directory is used to create an EBS snapshot containing the training data
+- The packer dierctory is used to create the ami that will be used for training
+- The trainr directory is used to create an EC2 instance that will train the model and push it to S3
 ```
 .
 ├── README.md
