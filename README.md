@@ -25,8 +25,8 @@ Steps:
 │   ├── trainr.auto.tfvars
 │   └── variables.tf
 ├── packer
-│   ├── pkr_trainr.json
-│   ├── pkr_vars_trainr.json
+│   ├── trainr.json
+│   ├── vars_trainr.json
 │   └── secrets.json <-- Create this
 └── trainr
     ├── secrets.auto.tfvars <-- Create this

@@ -1,2 +1,12 @@
-*secrets*
-.terraform
+# Ignore everything
+*
+!.gitignore
+!README.md
+!data/data.tf
+!data/trainr.auto.tfvars
+!data/variables.tf
+!packer/trainr.json
+!packer/vars_trainr.json
+!trainr/trainr.auto.tfvars
+!trainr/trainr.tf
+!trainr/variables.tf
