@@ -66,8 +66,8 @@ if __name__=="__main__":
         os.makedirs(save_dir)
     model_path = os.path.join(save_dir, model_name)
     cnn.save(model_path)
-    print('Saved trained model at %s ' % model_path)
 
+    print('Saved trained model at %s ' % model_path)
     scores = cnn.evaluate(x_test, y_test, verbose=1)
     print('Test loss:', scores[0])
     print('Test accuracy:', scores[1])
