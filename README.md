@@ -23,7 +23,7 @@ A way to create and then destroy AWS resources to train ML models
     └── variables.tf
 ```
 
-## Tutorial (OSX)
+## Tutorial (OSX) WIP!!
 This tutorial goes through how I use this project to train my models. In this case we are training a CNN on the CIFAR-10 dataset.
 
 ### Prerequisites: Terraform and Packer Credentials
