@@ -9,6 +9,12 @@ variable "az" {
 variable "instance_type" {
   default = "p2.xlarge"
 }
-variable "size" {}
-variable "local_script_path" {}
-variable "remote_script_path" {}
+variable "size" {
+  default = 1
+}
+variable "key_name" {
+  default = "trainr"
+}
+variable "private_key" {
+  default = ".ssh/trainr.pem"
+}
