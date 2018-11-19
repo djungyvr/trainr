@@ -108,3 +108,7 @@ resource "null_resource" "unmount" {
   }
   depends_on = ["null_resource.collect"]
 }
+
+output "volume_id" {
+  value = "${aws_ebs_volume.volume.id}"
+}

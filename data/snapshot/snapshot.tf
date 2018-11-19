@@ -11,3 +11,7 @@ resource "aws_ebs_snapshot" "data" {
     Name = "trainr"
   }
 }
+
+output "snapshot_id" {
+  value = "${aws_ebs_snapshot.data.id}"
+}
