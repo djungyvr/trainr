@@ -3,6 +3,11 @@ init:
 	cd data/snapshot; terraform init
 	cd trainr; terraform init
 
+init-tutorial:
+	cp tutorial/collect.sh data/collect.sh
+	cp tutorial/cifar.py data/cifar.py
+	cp tutorial/train.sh data/train.sh
+
 create-data:
 	cd data; terraform apply -var-file="../secrets.tfvars"
 
@@ -31,5 +36,7 @@ train:
 destroy-train:
 	$(eval SNAPSHOT_ID := $(shell cd data/snapshot; terraform output snapshot_id))
 	cd trainr; terraform destroy \
+		-var instance_type=foo \
+		-var keras_script=foo \
 		-var snapshot=$(SNAPSHOT_ID) \
 		-var-file="../secrets.tfvars"

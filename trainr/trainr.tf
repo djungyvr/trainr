@@ -34,20 +34,6 @@ resource "aws_instance" "trainr" {
   availability_zone = "${var.az}"
   vpc_security_group_ids = ["${aws_security_group.trainr_sg.id}"]
 
-  connection {
-    user = "ubuntu"
-    type = "ssh"
-    private_key = "${file(var.private_key)}"
-  }
-
-  provisioner "file" {
-    source = "${var.script}"
-    destination = "/tmp/${var.script}"
-  }
-  provisioner "file" {
-    source = "${var.keras_script}"
-    destination = "/tmp/${var.keras_script}"
-  }
 }
 
 resource "null_resource" "train" {
@@ -57,14 +43,28 @@ resource "null_resource" "train" {
     private_key = "${file(var.private_key)}"
     user = "ubuntu"
   }
+
+  # Mount the volume
   provisioner "remote-exec" {
     inline = [
-      "whoami",
       "sudo mkdir -p /trainr-data",
       "sudo mount /dev/nvme1n1 /trainr-data",
-      "sudo chmod +x /tmp/${var.script}",
-      "sudo cp /tmp/${var.script} /trainr-data/${var.script}",
-      "sudo cp /tmp/${var.keras_script} /trainr-data/${var.keras_script}",
+      "sudo chown ubuntu:ubuntu /trainr-data",
+    ]
+  }
+  # Copy over training files
+  provisioner "file" {
+    source = "${var.script}"
+    destination = "/trainr-data/${var.script}"
+  }
+  provisioner "file" {
+    source = "${var.keras_script}"
+    destination = "/trainr-data/${var.keras_script}"
+  }
+  # Run the training files
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /trainr-data/${var.script}",
       "cd /trainr-data; ./${var.script}",
       "sudo umount /trainr-data",
     ]

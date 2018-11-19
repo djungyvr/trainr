@@ -68,7 +68,7 @@ if __name__=="__main__":
     cnn.save(model_path)
 
     print('Saved trained model at %s ' % model_path)
-    scores = cnn.evaluate(x_test, y_test, verbose=1)
+    scores = cnn.evaluate(X_test, y_test, verbose=1)
     print('Test loss:', scores[0])
     print('Test accuracy:', scores[1])
 
