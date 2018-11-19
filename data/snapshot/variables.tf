@@ -3,4 +3,6 @@ variable "secret_key" {}
 variable "region" {
   default = "us-west-2"
 }
-variable "volume" {}
+variable "volume" {
+  default = "foo"
+}

@@ -10,6 +10,13 @@ resource "aws_security_group" "trainr_sg" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  # Open outbound
+  egress {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 data "aws_ami" "ami" {
@@ -72,7 +79,7 @@ resource "null_resource" "mount" {
     inline = [
       "sudo mkfs -F -t ext4 /dev/xvdh",
       "sudo mkdir /trainr-data",
-      "sudo mount /dev/xvdh /trainr-data ",
+      "sudo mount /dev/xvdh /trainr-data",
     ]
   }
   depends_on = ["aws_volume_attachment.att"]
@@ -87,8 +94,10 @@ resource "null_resource" "collect" {
   }
   provisioner "remote-exec" {
     inline = [
+      "ls /trainr-data",
       "sudo chmod +x /tmp/${var.script}",
-      "sudo /tmp/${var.script}",
+      "cd /trainr-data; sudo /tmp/${var.script}",
+      "ls /trainr-data",
     ]
   }
   depends_on = ["null_resource.mount"]

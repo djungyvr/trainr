@@ -12,6 +12,10 @@ resource "aws_ebs_snapshot" "data" {
   }
 }
 
+output "volume_id" {
+  value = "${var.volume}"
+}
+
 output "snapshot_id" {
   value = "${aws_ebs_snapshot.data.id}"
 }

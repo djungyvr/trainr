@@ -7,7 +7,7 @@ variable "az" {
   default = "us-west-2a"
 }
 variable "size" {
-  default = 1
+  default = 5
 }
 variable "key_name" {
   default = "trainr"

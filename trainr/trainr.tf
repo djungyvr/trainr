@@ -12,18 +12,8 @@ resource "aws_security_group" "trainr_sg" {
   }
 }
 
-data "aws_ebs_snapshot" "snapshot" {
-  most_recent = true
-  owners      = ["self"]
-
-  filter {
-    name   = "tag:Name"
-    values = ["trainr"]
-  }
-}
-
 resource "aws_ebs_volume" "volume" {
-  snapshot_id       = "${data.aws_ebs_snapshot.snapshot.id}"
+  snapshot_id       = "${var.snapshot}"
   size              = "${var.size}"
   availability_zone = "${var.az}"
 }
@@ -51,6 +41,10 @@ resource "aws_instance" "trainr" {
     source = "${var.script}"
     destination = "/tmp/${var.script}"
   }
+  provisioner "file" {
+    source = "${var.keras_script}"
+    destination = "/tmp/${var.keras_script}"
+  }
 }
 
 resource "null_resource" "train" {
@@ -62,8 +56,12 @@ resource "null_resource" "train" {
   }
   provisioner "remote-exec" {
     inline = [
+      "sudo mkdir /trainr-data",
+      "sudo mount /dev/xvdh /trainr-data",
       "sudo chmod +x /tmp/${var.script}",
-      "sudo /tmp/${var.script}",
+      "sudo cp /tmp/${var.script} /trainr-data",
+      "sudo cp /tmp/${var.keras_script} /trainr-data",
+      "sudo /trainr-data/${var.script}",
     ]
   }
   depends_on = ["aws_volume_attachment.att"]

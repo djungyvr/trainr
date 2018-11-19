@@ -25,6 +25,7 @@ A way to create and then destroy AWS resources to train ML models
 
 ## Tutorial (OSX) WIP!!
 This tutorial goes through how I use this project to train my models. In this case we are training a CNN on the CIFAR-10 dataset.
+You may need to request to increase your EC2 service limits for the more powerful instances.
 
 ### Prerequisites: Terraform and Packer Credentials
 1. Install Packer and Terraform with `brew install packer` and `brew install terraform`
