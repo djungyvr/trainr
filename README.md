@@ -31,6 +31,8 @@ This tutorial goes through how I use this project to train my models. In this ca
 2. Create an IAM group with the following permissions: [AmazonEC2FullAccess, AmazonS3FullAccess]
 3. Create an IAM user and add it to the group. Note the access key and secret key. We will need this to provision AWS resources.
 4. Use the keys to create a secrets.tfvars and a secrets.json file they are used for Terraform and Packer respectively.
+5. Create an EC2 Key Pair create a directory and file `.ssh/<secret-key>.pem` inside data and trainr
+6. Run `terraform init` in `data`, `data/snapshot`, `trainr`
 
 secrets.tfvars
 ```

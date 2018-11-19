@@ -6,9 +6,6 @@ variable "region" {
 variable "az" {
   default = "us-west-2a"
 }
-variable "instance_type" {
-  default = "p2.xlarge"
-}
 variable "size" {
   default = 1
 }
@@ -17,4 +14,7 @@ variable "key_name" {
 }
 variable "private_key" {
   default = ".ssh/trainr.pem"
+}
+variable "script" {
+  default = "collect.sh"
 }

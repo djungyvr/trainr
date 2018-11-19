@@ -6,9 +6,7 @@ provider "aws" {
 
 resource "aws_security_group" "trainr_sg" {
   # Open ssh
-  ingress {
-    from_port = 22
-    to_port = 22
+  ingress { from_port = 22 to_port = 22
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -37,6 +35,7 @@ resource "aws_volume_attachment" "att" {
   device_name = "/dev/sdh"
   volume_id   = "${aws_ebs_volume.volume.id}"
   instance_id = "${aws_instance.ec2.id}"
+
   depends_on = ["aws_instance.ec2", "aws_ebs_volume.volume"]
 }
 
@@ -46,17 +45,23 @@ resource "aws_instance" "ec2" {
   availability_zone = "${var.az}"
   key_name = "${var.key_name}"
   vpc_security_group_ids = ["${aws_security_group.trainr_sg.id}"]
+
+  connection {
+    user = "ubuntu"
+  }
+
+  provisioner "file" {
+    source = "${var.script}"
+    destination = "/tmp/${var.script}"
+  }
 }
 
 resource "aws_ebs_volume" "volume" {
   availability_zone = "${var.az}"
   size              = "${var.size}"
-  tags {
-    Name = "${var.size}"
-  }
 }
 
-resource "null_resource" "provision" {
+resource "null_resource" "mount" {
   connection {
     type = "ssh"
     host = "${aws_instance.ec2.public_ip}"
@@ -65,8 +70,41 @@ resource "null_resource" "provision" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo \"hello\"",
+      "sudo mkfs -F -t ext4 /dev/xvdh",
+      "sudo mkdir /trainr-data",
+      "sudo mount /dev/xvdh /trainr-data ",
     ]
   }
   depends_on = ["aws_volume_attachment.att"]
+}
+
+resource "null_resource" "collect" {
+  connection {
+    type = "ssh"
+    host = "${aws_instance.ec2.public_ip}"
+    private_key = "${file(var.private_key)}"
+    user = "ubuntu"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /tmp/${var.script}",
+      "sudo /tmp/${var.script}",
+    ]
+  }
+  depends_on = ["null_resource.mount"]
+}
+
+resource "null_resource" "unmount" {
+  connection {
+    type = "ssh"
+    host = "${aws_instance.ec2.public_ip}"
+    private_key = "${file(var.private_key)}"
+    user = "ubuntu"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo umount /trainr-data",
+    ]
+  }
+  depends_on = ["null_resource.collect"]
 }
