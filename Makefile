@@ -3,8 +3,10 @@ init:
 	cd data/snapshot; terraform init
 	cd trainr; terraform init
 
-create-snapshot:
+create-data:
 	cd data; terraform apply -var-file="../secrets.tfvars"
+
+create-snapshot:
 	$(eval VOLUME_ID := $(shell cd data; terraform output volume_id))
 	cd data/snapshot; terraform apply \
 		-var volume=$(VOLUME_ID) \

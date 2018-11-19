@@ -1,12 +1,13 @@
 provider "aws" {
-  access_key    = "${var.access_key}"
-  secret_key    = "${var.secret_key}"
+  access_key    = "${var.access_key}" secret_key    = "${var.secret_key}"
   region        = "${var.region}"
 }
 
 resource "aws_security_group" "trainr_sg" {
   # Open ssh
-  ingress { from_port = 22 to_port = 22
+  ingress {
+    from_port = 22
+    to_port = 22
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -35,6 +36,8 @@ resource "aws_instance" "trainr" {
 
   connection {
     user = "ubuntu"
+    type = "ssh"
+    private_key = "${file(var.private_key)}"
   }
 
   provisioner "file" {
@@ -56,12 +59,14 @@ resource "null_resource" "train" {
   }
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir /trainr-data",
-      "sudo mount /dev/xvdh /trainr-data",
+      "whoami",
+      "sudo mkdir -p /trainr-data",
+      "sudo mount /dev/nvme1n1 /trainr-data",
       "sudo chmod +x /tmp/${var.script}",
-      "sudo cp /tmp/${var.script} /trainr-data",
-      "sudo cp /tmp/${var.keras_script} /trainr-data",
-      "sudo /trainr-data/${var.script}",
+      "sudo cp /tmp/${var.script} /trainr-data/${var.script}",
+      "sudo cp /tmp/${var.keras_script} /trainr-data/${var.keras_script}",
+      "cd /trainr-data; ./${var.script}",
+      "sudo umount /trainr-data",
     ]
   }
   depends_on = ["aws_volume_attachment.att"]

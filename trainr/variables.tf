@@ -17,7 +17,9 @@ variable "private_key" {
 variable "script" {
   default = "train.sh"
 }
-variable "ami" {}
+variable "ami" {
+  default = "ami-0688c8f24f1c0e235"
+}
 variable "instance_type" {
   #default = "t2.micro"
   #default = "p2.xlarge"

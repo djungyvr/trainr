@@ -60,7 +60,7 @@ if __name__=="__main__":
     X_train /= 255
     X_test /= 255
 
-    cnn.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=32, epochs=5, shuffle=True)
+    cnn.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=32, epochs=5, shuffle=True, verbose=0)
 
     if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
