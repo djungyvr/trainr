@@ -66,7 +66,9 @@ resource "null_resource" "train" {
     inline = [
       "sudo chmod +x /trainr-data/${var.script}",
       "cd /trainr-data; ./${var.script}",
-      "sudo umount /trainr-data",
+      # Sleep so the disk is no longer busy
+      "sleep 15",
+      "cd /; sudo umount /trainr-data",
     ]
   }
   depends_on = ["aws_volume_attachment.att"]
