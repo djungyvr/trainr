@@ -48,7 +48,7 @@ resource "null_resource" "train" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /trainr-data",
-      "sudo mount /dev/nvme1n1 /trainr-data",
+      "sudo mount /dev/xvdh /trainr-data",
       "sudo chown ubuntu:ubuntu /trainr-data",
     ]
   }

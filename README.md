@@ -1,6 +1,5 @@
 # Trainr
-A way to create and then destroy AWS resources to train ML models
-
+A way to create and then destroy AWS resources to train ML models 
 ## Directories
 - The data directory is used to create an EBS snapshot containing the training data
 - The trainr directory is used to create an EC2 instance that will train the model and push it to S3
@@ -48,7 +47,7 @@ Now run `make destroy-data` to destroy the infrastructure except for the EBS
 ### Training the Model
 To train the model run `make train`. This will run the trainr/train.sh file
 which calls the trainr/cifar.py. Terraform will ask for the instance type you wish
-to use, enter any instance type that has a GPU to take advantage of CUDA. In most cases a p2.xlarge is good enough.
+to use, enter any instance type that has a GPU to take advantage of CUDA. In most cases a p2.xlarge is good enough and for the keras\_script enter cifar.py
 
 Once the training is completed run `make destroy-train`. This will destroy the infrastructure used to train the models. Make sure to run this step or you may be charged a lot.
 The tutorial does not store the models anywhere but the train.sh file can be updated to push the Keras model to S3 or some otherplace.

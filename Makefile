@@ -5,8 +5,8 @@ init:
 
 init-tutorial:
 	cp tutorial/collect.sh data/collect.sh
-	cp tutorial/cifar.py data/cifar.py
-	cp tutorial/train.sh data/train.sh
+	cp tutorial/cifar.py trainr/cifar.py
+	cp tutorial/train.sh trainr/train.sh
 
 create-data:
 	cd data; terraform apply -var-file="../secrets.tfvars"
