@@ -1,5 +1,6 @@
 # Trainr
-A way to create and then destroy AWS resources to train ML models 
+A way to create and then destroy AWS resources to train ML models
+
 ## Directories
 - The data directory is used to create an EBS snapshot containing the training data
 - The trainr directory is used to create an EC2 instance that will train the model and push it to S3
@@ -22,7 +23,7 @@ This tutorial goes through how I use this project to train my models. In this ca
 You may need to request to increase your EC2 service limits for the more powerful instances.
 
 ### Prerequisites
-1. Install Terraform with `brew install packer` and `brew install terraform`
+1. Install Terraform with `brew install terraform`
 2. Create an IAM group with the following permissions: [AmazonEC2FullAccess, AmazonS3FullAccess]
 3. Create an IAM user and add it to the group. Note the access key and secret key. We will need this to provision AWS resources.
 
